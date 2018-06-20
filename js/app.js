@@ -1,22 +1,54 @@
 // Enemies our player must avoid
 var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-    this.x = 0;
-    this.y = ((Math.floor(Math.random() * 3) + 1) * 100) - 60;
-    this.speedFactor = Math.floor(Math.random() * 5)
+  // Bugs go in oppossing directions to increase dificulty.
+  this.goingRight = function (){
+    const direction = Math.floor((Math.random() * 2) + 1);
+    if (direction === 1) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }();
+  // Variables applied to each of our instances go here,
+  // we've provided one for you to get started
+  if(this.goingRight) {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
+    this.sprite = 'images/enemy-bug-right.png';
+    this.x = 0;
+  }
+  else {
+    this.sprite = 'images/enemy-bug-left.png';
+    this.x = 400;
+  }
+  // This random y value should be within the three street tiles.
+  this.y = ((Math.floor(Math.random() * 3) + 1) * 100) - 60;
+  // I wanted bugs to be unpredictable so I radomized their speed.
+  this.speedFactor = Math.floor(Math.random() * 5)
+
+  this.reposition = function () {
+    if(this.goingRight) {
+      this.x = 0;
+    }
+    else {
+      this.x = 450;
+    }
+  }
 };
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-    this.x = this.x + this.speedFactor + (50 * dt);
+  // You should multiply any movement by the dt parameter
+  // which will ensure the game runs at the same speed for
+  // all computers.
+  if (this.goingRight) {
+    this.x = (this.x + this.speedFactor + (50 * dt));
+  }
+  else {
+    this.x = (this.x - this.speedFactor - (50 * dt));
+  }
 };
 
 // Draw the enemy on the screen, required method for game
