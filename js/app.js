@@ -29,7 +29,7 @@ var Enemy = function() {
 
   // I wanted bugs to be unpredictable so I radomized their speed.
   this.setSpeed = function () {
-    return Math.floor(Math.random() * 5) + 2;
+    return Math.floor(Math.random() * 5) + 1;
   }
 
   this.speedFactor = this.setSpeed();
@@ -128,7 +128,17 @@ let bug6 = new Enemy();
 let allEnemies = [bug1, bug2, bug3, bug4, bug5, bug6];
 let player = new Player();
 
-
+function checkCollisions() {
+  allEnemies.forEach(function(enemy){
+    const closeOnX = (enemy.x >= (player.x - 75) && enemy.x <= (player.x + 75));
+    const closeOnY = (enemy.y >= (player.y - 25) && enemy.y <= (player.y + 25));
+    const onSameTile = (closeOnX) && (closeOnY);
+    if(onSameTile) {
+      player.x = 200;
+      player.y = 375;
+    }
+  });
+}
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
