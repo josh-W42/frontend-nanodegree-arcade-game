@@ -25,7 +25,7 @@ var Enemy = function() {
     this.x = 400;
   }
   // This random y value should be within the three street tiles.
-  this.y = ((Math.floor(Math.random() * 3) + 1) * 100) - 60;
+  this.y = ((Math.floor(Math.random() * 3) + 1) * 50);
 
   // I wanted bugs to be unpredictable so I radomized their speed.
   this.setSpeed = function () {
@@ -101,15 +101,33 @@ Player.prototype.handleInput = function (input) {
       break;
     case 'down':
       this.y = this.y + 80;
+      if(this.y >= 400) {
+        this.y = this.y - 80;
+      }
       break;
     case 'left':
       this.x = this.x - 100;
+      if(this.x <= -50) {
+        this.x = this.x + 100;
+      }
       break;
     case 'right':
       this.x = this.x + 100;
+      if (this.x >= 450) {
+        this.x = this.x - 100;
+      }
       break;
   }
+  checkWin();
 };
+
+
+function checkWin() {
+  if(player.y <= 0) {
+    player.x = 200;
+    player.y = 375;
+  }
+}
 
 // Now instantiate your objects.
 
@@ -130,7 +148,9 @@ let player = new Player();
 
 function checkCollisions() {
   allEnemies.forEach(function(enemy){
-    const closeOnX = (enemy.x >= (player.x - 75) && enemy.x <= (player.x + 75));
+    // These variables should make this easier to read but basically if a bug
+    // comes within a 100 x 50 (x, y) area of the player, the player is reset.
+    const closeOnX = (enemy.x >= (player.x - 50) && enemy.x <= (player.x + 50));
     const closeOnY = (enemy.y >= (player.y - 25) && enemy.y <= (player.y + 25));
     const onSameTile = (closeOnX) && (closeOnY);
     if(onSameTile) {
