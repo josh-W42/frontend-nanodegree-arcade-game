@@ -1,7 +1,7 @@
 // Enemies our player must avoid
 var Enemy = function() {
   // Bugs go in oppossing directions to increase dificulty.
-  this.goingRight = function (){
+  this.setDirection = function () {
     const direction = Math.floor((Math.random() * 2) + 1);
     if (direction === 1) {
       return true;
@@ -9,7 +9,9 @@ var Enemy = function() {
     else {
       return false;
     }
-  }();
+  }
+
+  this.goingRight = this.setDirection();
   // Variables applied to each of our instances go here,
   // we've provided one for you to get started
   if(this.goingRight) {
@@ -24,15 +26,23 @@ var Enemy = function() {
   }
   // This random y value should be within the three street tiles.
   this.y = ((Math.floor(Math.random() * 3) + 1) * 100) - 60;
+
   // I wanted bugs to be unpredictable so I radomized their speed.
-  this.speedFactor = Math.floor(Math.random() * 5)
+  this.setSpeed = function () {
+    return Math.floor(Math.random() * 5) + 2;
+  }
+
+  this.speedFactor = this.setSpeed();
 
   this.reposition = function () {
+    this.y = ((Math.floor(Math.random() * 3) + 1) * 100) - 60;
     if(this.goingRight) {
+      this.sprite = 'images/enemy-bug-right.png';
       this.x = 0;
     }
     else {
       this.x = 450;
+      this.sprite = 'images/enemy-bug-left.png';
     }
   }
 };
@@ -44,9 +54,19 @@ Enemy.prototype.update = function(dt) {
   // which will ensure the game runs at the same speed for
   // all computers.
   if (this.goingRight) {
+    if (this.x >= 400) {
+      this.goingRight = this.setDirection();
+      this.speedFactor = this.setSpeed();
+      this.reposition();
+    }
     this.x = (this.x + this.speedFactor + (50 * dt));
   }
   else {
+    if (this.x <= 0) {
+      this.goingRight = this.setDirection();
+      this.speedFactor = this.setSpeed();
+      this.reposition();
+    }
     this.x = (this.x - this.speedFactor - (50 * dt));
   }
 };
@@ -70,11 +90,11 @@ Player.prototype.render = function () {
 };
 
 Player.prototype.update = function (dt) {
-  dt * 2;
+  this.x = this.x;
+  this.y = this.y;
 };
 
 Player.prototype.handleInput = function (input) {
-  console.log(this);
   switch (input) {
     case 'up':
       this.y = this.y - 80;
@@ -96,13 +116,16 @@ Player.prototype.handleInput = function (input) {
 let bug1 = new Enemy();
 let bug2 = new Enemy();
 let bug3 = new Enemy();
+let bug4 = new Enemy();
+let bug5 = new Enemy();
+let bug6 = new Enemy();
 
 
 
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-let allEnemies = [bug1, bug2, bug3];
+let allEnemies = [bug1, bug2, bug3, bug4, bug5, bug6];
 let player = new Player();
 
 
