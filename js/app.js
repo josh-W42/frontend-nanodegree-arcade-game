@@ -202,9 +202,46 @@ document.addEventListener('keyup', function(e) {
     player.prototype.handleInput.call(player, allowedKeys[e.keyCode]);
 });
 
+function fillZero(num) {
+  //This function should
+  if (num < 10) {
+    num = "0" + num;
+  }
+  return num;
+}
+
+function startTimer() {
+    // This function will run in the background, constantly updating the timer.
+    tens++;
+    if (tens > 99) {
+      seconds++;
+      tens = 0;
+    }
+    if (seconds >= 60) {
+      minutes++;
+      seconds = 0;
+    }
+  document.querySelector('#time').innerHTML = `${fillZero(minutes)}:${fillZero(seconds)}:${fillZero(tens)}`;
+}
+
+function resetTimer() {
+  // resets all data related to the timer.
+  clearInterval(timerInterval);
+  document.querySelector('#time').innerHTML = "00:00:00";
+  seconds = 0;
+  tens = 0;
+  minutes = 0;
+  gameRunning = false;
+}
+
 let level_one = new LevelOne;
 let allEnemies;
 let player;
+let gameRunning;
+let seconds = 0;
+let tens = 0;
+let minutes = 0;
+let timerInterval = setInterval(startTimer, 10);
 
 function setLevel(allEnemies, player, level) {
   allEnemies = level.enemies;
