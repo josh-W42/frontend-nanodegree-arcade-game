@@ -91,9 +91,9 @@ var Engine = (function(global) {
      */
     function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
-            enemy.update(dt);
+            enemy.prototype.update.call(enemy, dt);
         });
-        player.update();
+        player.prototype.update.call(player);
     }
 
     /* This function initially draws the "game level", it will then call
@@ -150,10 +150,10 @@ var Engine = (function(global) {
          * the render function you have defined.
          */
         allEnemies.forEach(function(enemy) {
-            enemy.render();
+            enemy.prototype.render.call(enemy);
         });
 
-        player.render();
+        player.prototype.render.call(player);
     }
 
     /* This function does nothing but it could have been a good place to

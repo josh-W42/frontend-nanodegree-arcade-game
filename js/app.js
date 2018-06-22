@@ -1,39 +1,15 @@
 // Enemies our player must avoid
-var Enemy = function() {
-  // Bugs go in oppossing directions to increase dificulty.
-  this.setDirection = function () {
-    const direction = Math.floor((Math.random() * 2) + 1);
-    if (direction === 1) {
-      return true;
-    }
-    else {
-      return false;
-    }
-  }
-
-  this.goingRight = this.setDirection();
-  // Variables applied to each of our instances go here,
-  // we've provided one for you to get started
-  if(this.goingRight) {
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug-right.png';
-    this.x = 0;
-  }
-  else {
-    this.sprite = 'images/enemy-bug-left.png';
-    this.x = 400;
-  }
-  // This random y value should be within the three street tiles.
-  this.y = ((Math.floor(Math.random() * 3) + 1) * 50);
-
+let Enemy = function() {
+  this.x;
+  this.y;
+  this.sprite;
+  this.goingRight;
   // I wanted bugs to be unpredictable so I radomized their speed.
   this.setSpeed = function () {
     return Math.floor(Math.random() * 5) + 1;
-  }
+  };
 
   this.speedFactor = this.setSpeed();
-
   this.reposition = function () {
     this.y = ((Math.floor(Math.random() * 3) + 1) * 100) - 60;
     if(this.goingRight) {
@@ -44,8 +20,8 @@ var Enemy = function() {
       this.x = 450;
       this.sprite = 'images/enemy-bug-left.png';
     }
-  }
-};
+  };
+}
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -73,16 +49,16 @@ Enemy.prototype.update = function(dt) {
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 let Player = function() {
-  this.x = 200;
-  this.y = 375;
-  this.sprite = 'images/char-boy.png';
+  this.x;
+  this.y;
+  this.sprite;
 };
 
 Player.prototype.render = function () {
@@ -97,54 +73,108 @@ Player.prototype.update = function (dt) {
 Player.prototype.handleInput = function (input) {
   switch (input) {
     case 'up':
-      this.y = this.y - 80;
-      break;
+    this.y = this.y - 80;
+    break;
     case 'down':
-      this.y = this.y + 80;
-      if(this.y >= 400) {
-        this.y = this.y - 80;
-      }
-      break;
+    this.y = this.y + 80;
+    if(this.y >= 400) {
+      this.y = this.y - 80;
+    }
+    break;
     case 'left':
-      this.x = this.x - 100;
-      if(this.x <= -50) {
-        this.x = this.x + 100;
-      }
-      break;
-    case 'right':
+    this.x = this.x - 100;
+    if(this.x <= -50) {
       this.x = this.x + 100;
-      if (this.x >= 450) {
-        this.x = this.x - 100;
-      }
-      break;
+    }
+    break;
+    case 'right':
+    this.x = this.x + 100;
+    if (this.x >= 450) {
+      this.x = this.x - 100;
+    }
+    break;
   }
-  checkWin();
-};
-
-
-function checkWin() {
+  // This condition checks if the player has reached the water.
   if(player.y <= 0) {
     player.x = 200;
     player.y = 375;
   }
+};
+
+let Level = function () {
 }
 
-// Now instantiate your objects.
+Level.prototype.makeEnemy = function () {
+  return this.makeEnemy();
+};
 
-let bug1 = new Enemy();
-let bug2 = new Enemy();
-let bug3 = new Enemy();
-let bug4 = new Enemy();
-let bug5 = new Enemy();
-let bug6 = new Enemy();
+Level.prototype.makePlayer = function () {
+  return this.makePlayer();
+};
 
+// Since I'm making multiple levels, I want the behaviors of my Enemies and
+// Player to be different for each level.
+function LevelOne() {
+  Level.call(this);
+  function LevelOneEnemy() {
+    Enemy.call(this);
+    // Bugs go in oppossing directions to increase dificulty.
+    this.setDirection = function () {
+      const direction = Math.floor((Math.random() * 2) + 1);
+      if (direction === 1) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    };
+    this.goingRight = this.setDirection();
+    // Variables applied to each of our instances go here,
+    // we've provided one for you to get started
+    if (this.goingRight) {
+      // The image/sprite for our enemies, this uses
+      // a helper we've provided to easily load images
+      this.sprite = 'images/enemy-bug-right.png';
+      this.x = 0;
+    }
+    else {
+      this.sprite = 'images/enemy-bug-left.png';
+      this.x = 400;
+    }
+    // This random y value should be within the three street tiles.
+    this.y = ((Math.floor(Math.random() * 3) + 1) * 50);
+  }
 
+  LevelOneEnemy.prototype = Enemy;
 
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+  function LevelOnePlayer() {
+    Player.call(this);
+    this.x = 200;
+    this.y = 375;
+    this.sprite = 'images/char-boy.png';
+  }
 
-let allEnemies = [bug1, bug2, bug3, bug4, bug5, bug6];
-let player = new Player();
+  LevelOnePlayer.prototype = Player;
+
+  this.makeEnemy = function () {
+    return new LevelOneEnemy;
+  }
+  this.makePlayer = function () {
+    return new LevelOnePlayer;
+  }
+
+  // All levels should have an enemies property.
+  let bug1 = this.makeEnemy();
+  let bug2 = this.makeEnemy();
+  let bug3 = this.makeEnemy();
+  let bug4 = this.makeEnemy();
+  let bug5 = this.makeEnemy();
+  let bug6 = this.makeEnemy();
+  this.enemies = [bug1, bug2, bug3, bug4, bug5, bug6];
+  this.player = this.makePlayer();
+}
+
+LevelOne.prototype = Level;
 
 function checkCollisions() {
   allEnemies.forEach(function(enemy){
@@ -152,8 +182,7 @@ function checkCollisions() {
     // comes within a 100 x 50 (x, y) area of the player, the player is reset.
     const closeOnX = (enemy.x >= (player.x - 50) && enemy.x <= (player.x + 50));
     const closeOnY = (enemy.y >= (player.y - 25) && enemy.y <= (player.y + 25));
-    const onSameTile = (closeOnX) && (closeOnY);
-    if(onSameTile) {
+    if((closeOnX) && (closeOnY)) {
       player.x = 200;
       player.y = 375;
     }
@@ -170,5 +199,20 @@ document.addEventListener('keyup', function(e) {
         40: 'down'
     };
 
-    player.handleInput(allowedKeys[e.keyCode]);
+    player.prototype.handleInput.call(player, allowedKeys[e.keyCode]);
 });
+
+let level_one = new LevelOne;
+let allEnemies;
+let player;
+
+function setLevel(allEnemies, player, level) {
+  allEnemies = level.enemies;
+  player = level.player;
+  return [allEnemies, player];
+}
+
+let gameData = setLevel(allEnemies, player, level_one);
+
+allEnemies = gameData[0];
+player = gameData[1];
