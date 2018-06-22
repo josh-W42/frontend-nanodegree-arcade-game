@@ -1,3 +1,65 @@
 body {
     text-align: center;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 255, 255, 0.9));
+    background-image: url('../images/kids-wallpaper-3.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#gameSideBox {
+  height: 530px;
+  width: 500px;
+  float: left;
+  border: 2px solid black;
+  margin-left: 150px;
+  margin-top: 50px;
+  text-align: center;
+  display: block;
+  position: relative;
+}
+
+@media screen and (max-width: 1025px) {
+  #gameSideBox {
+    width: 400px;
+    margin-left: 25px;
+  }
+  body {
+    background-size: auto;
+    background-repeat: repeat-y;
+  }
+}
+
+canvas {
+  position: relative;
+  margin-left: 5;
+  float: left;
+}
+
+#gameInfoContainer {
+  display: flex;
+  font-size: 20pt;
+}
+
+.infoValue {
+  font-weight: bold;
+  /* border: 1px solid black; */
+  height: 100px;
+  width: 150px;
+  margin-right: auto;
+  margin-left: auto;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4));
+  box-shadow: 5px 5px 10px black;
+  color: black;
+}
+
+#time {
+  font-weight: normal;
+}
+
+#score {
+  font-weight: normal;
+}
+
+#lives {
+  font-weight: normal;
 }

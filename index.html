@@ -4,10 +4,47 @@
     <meta charset="UTF-8">
     <title>Effective JavaScript: Frogger</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <script src="js/resources.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/engine.js"></script>
+  <div id="gameSideBox">
+    <h2>Arcade Game Clone</h2>
+    <div id="gameInfoContainer">
+      <div class="infoValue">
+        <span>Time:</span>
+        <p id="time">00:00:00</p>
+      </div>
+      <div class="infoValue">
+        <span>Score:</span>
+        <p id="score">0 pts</p>
+      </div>
+      <div class="infoValue">
+        <span>Lives:</span>
+        <p id="lives">
+          <i class="fa fa-heart" aria-hidden="true"></i>
+          <i class="fa fa-heart" aria-hidden="true"></i>
+          <i class="fa fa-heart" aria-hidden="true"></i>
+          <i class="fa fa-heart" aria-hidden="true"></i>
+        </p>
+      </div>
+    </div>
+    <div id='playerIconChooser'>
+      <div class="playerIcon">
+      </div>
+      <div class="playerIcon">
+      </div>
+      <div class="playerIcon">
+      </div>
+      <div class="playerIcon">
+      </div>
+      <div class="playerIcon">
+      </div>
+      <div class="playerIcon">
+      </div>
+    </div>
+  </div>
+  <script src="js/resources.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/engine.js"></script>
 </body>
 </html>
