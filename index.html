@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Effective JavaScript: Frogger</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <meta charset="UTF-8">
+  <title>Effective JavaScript: Frogger</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
   <div id="gameSideBox">
@@ -16,7 +19,7 @@
       </div>
       <div class="infoValue">
         <span>Score:</span>
-        <p id="score">0 pts</p>
+        <p><span id="score">0</span> pts</p>
       </div>
       <div class="infoValue">
         <span>Lives:</span>
@@ -28,23 +31,112 @@
         </p>
       </div>
     </div>
+    <h2 class="playerTitle">Character Selector:</h2>
     <div id='playerIconChooser'>
-      <div class="playerIcon">
-      </div>
-      <div class="playerIcon">
-      </div>
-      <div class="playerIcon">
-      </div>
-      <div class="playerIcon">
-      </div>
-      <div class="playerIcon">
-      </div>
-      <div class="playerIcon">
+      <div class="playerRow">
+        <div class="playerIcon">
+          <img class="player playerSelected" src="images/char-boy.png" alt="boy character" />
+          <img class="player" src="images/char-cat-girl.png" alt="boy character" />
+        </div>
+        <div class="playerIcon">
+          <img class="player" src="images/char-horn-girl.png" alt="boy character" />
+          <img class="player" src="images/char-pink-girl.png" alt="boy character" />
+        </div>
+        <div class="playerIcon">
+          <img class="player" src="images/char-princess-girl.png" alt="boy character" />
+          <img class="player" src="images/char-boy-negative.png" alt="boy character" />
+        </div>
       </div>
     </div>
   </div>
   <script src="js/resources.js"></script>
   <script src="js/app.js"></script>
   <script src="js/engine.js"></script>
+  <div id="modal" class="container">
+    <!-- Button trigger modal -->
+    <button id="modalTriggerWin" type="button" class="btn btn-primary" data-toggle="modal" data-target="#winningModal"></button>
+    <!-- Modal -->
+    <div class="modal fade" id="winningModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Congratulations! You Won!</h4>
+          </div>
+          <div class="modal-body">
+            <h1>Completed in: <span class="timeResult"></span></h1>
+            <h1>Lives Left: <span class="livesResult"></span></h1>
+            <h1>Score: <span class="scoreResult"></span></h1>
+            <p>You won the game in a time of <span id="timeResult"></span> and with <span id="livesResult"></span> live(s) left, WOW</p>
+          </div>
+          <div class="modal-footer">
+            <button class="resetGameButton" type="button" class="btn btn-default" data-dismiss="modal">Play Again</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="modal" class="container">
+    <!-- Button trigger modal -->
+    <button id="modalTriggerLose" type="button" class="btn btn-primary" data-toggle="modal" data-target="#losingModal"></button>
+    <!-- Modal -->
+    <div class="modal fade" id="losingModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Oh No! You lost all your lives!</h4>
+          </div>
+          <div class="modal-body">
+            <h1>Time: <span class="timeResult"></span></h1>
+            <h1>Score: <span class="scoreResult"></span></h1>
+            <p>BETTER LUCK NEXT TIME</p>
+          </div>
+          <div class="modal-footer">
+            <button class="resetGameButton" type="button" class="btn btn-default" data-dismiss="modal">Play Again</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="modal" class="container">
+    <!-- Button trigger modal -->
+    <button id="modalTriggerStart" type="button" class="btn btn-primary" data-toggle="modal" data-target="#StartModal"></button>
+    <!-- Modal -->
+    <div class="modal fade" id="StartModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Welcome to the game!</h4>
+          </div>
+          <div class="modal-body">
+            <h1>Instructions:</h1>
+            <p>
+              This goal of this game is to cross the bug filled street to reach the water.
+              However, these bugs are DANGEROUS and will attack, making you lose a life.
+              If you happen to lose all of your lives, you will LOSE.
+              But, if you reach a score of 5000, you will WIN.
+            </p>
+            <h1>Have Fun!</h1>
+          </div>
+          <div class="modal-footer">
+            <button id="startGameButton" type="button" class="btn btn-default" data-dismiss="modal">Play</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="mobileSupportButtons">
+    <table>
+      <tr>
+        <td></td>
+        <td id="arrowUpKey" class="touchButtons">🡅</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td id="arrowLeftKey" class="touchButtons">🡄</td>
+        <td id="arrowDownKey" class="touchButtons">🡇</td>
+        <td id="arrowRightKey" class="touchButtons">🡆</td>
+      </tr>
+    </table>
+  </div>
 </body>
 </html>
