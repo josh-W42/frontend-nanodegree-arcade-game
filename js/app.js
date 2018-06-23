@@ -222,6 +222,9 @@ document.addEventListener('keyup', function(e) {
 //This is for everything that may occur after this js file.
 window.addEventListener('load', function(){
   document.querySelector('#mobileSupportButtons').addEventListener('click', function(e){
+    window.addEventListener('dblclick', function(e){
+      e.preventDefault();
+    });
     if (e.target.classList[0] === 'touchButtons') {
       let allowedButtonId = {
         arrowUpKey: 'up',
@@ -233,7 +236,7 @@ window.addEventListener('load', function(){
       setTimeout(function () {
         e.target.classList.toggle('buttonPress');
         player.prototype.handleInput.call(player, allowedButtonId[e.target.id]);
-      }, 50);
+      });
     }
   });
   document.querySelector('#startGameButton').addEventListener('click', function() {

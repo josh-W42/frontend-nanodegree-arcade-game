@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Effective JavaScript: Frogger</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
   <link rel="stylesheet" href="css/style.css">
@@ -52,7 +53,7 @@
   <script src="js/resources.js"></script>
   <script src="js/app.js"></script>
   <script src="js/engine.js"></script>
-  <div id="modal" class="container">
+  <div class="container">
     <!-- Button trigger modal -->
     <button id="modalTriggerWin" type="button" class="btn btn-primary" data-toggle="modal" data-target="#winningModal"></button>
     <!-- Modal -->
@@ -75,7 +76,7 @@
       </div>
     </div>
   </div>
-  <div id="modal" class="container">
+  <div class="container">
     <!-- Button trigger modal -->
     <button id="modalTriggerLose" type="button" class="btn btn-primary" data-toggle="modal" data-target="#losingModal"></button>
     <!-- Modal -->
@@ -97,7 +98,7 @@
       </div>
     </div>
   </div>
-  <div id="modal" class="container">
+  <div class="container">
     <!-- Button trigger modal -->
     <button id="modalTriggerStart" type="button" class="btn btn-primary" data-toggle="modal" data-target="#StartModal"></button>
     <!-- Modal -->
@@ -128,13 +129,13 @@
     <table>
       <tr>
         <td></td>
-        <td id="arrowUpKey" class="touchButtons">🡅</td>
+        <td id="arrowUpKey" class="touchButtons">&#129093;</td>
         <td></td>
       </tr>
       <tr>
-        <td id="arrowLeftKey" class="touchButtons">🡄</td>
-        <td id="arrowDownKey" class="touchButtons">🡇</td>
-        <td id="arrowRightKey" class="touchButtons">🡆</td>
+        <td id="arrowLeftKey" class="touchButtons">&#129092;</td>
+        <td id="arrowDownKey" class="touchButtons">&#129095;</td>
+        <td id="arrowRightKey" class="touchButtons">&#129094;</td>
       </tr>
     </table>
   </div>
