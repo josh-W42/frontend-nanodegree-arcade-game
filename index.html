@@ -4,13 +4,20 @@
   <meta charset="UTF-8">
   <title>Effective JavaScript: Frogger</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=0" />
+  <!-- Font Awesome Fonts used -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- Boostrap css, Only used for modals -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+  <!-- Custom style Sheet -->
   <link rel="stylesheet" href="css/style.css">
+  <!-- bootstrap js, Only used for modals -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
+
+  <!-- Game Box Side Information  -->
+
   <div id="gameSideBox">
     <h2>Arcade Game Clone</h2>
     <div id="gameInfoContainer">
@@ -32,6 +39,9 @@
         </p>
       </div>
     </div>
+
+    <!-- Character Selection -->
+
     <h2 class="playerTitle">Character Selector:</h2>
     <div id='playerIconChooser'>
       <div class="playerRow">
@@ -50,13 +60,19 @@
       </div>
     </div>
   </div>
+
+  <!-- Canvas will appear here -->
+
   <script src="js/resources.js"></script>
   <script src="js/app.js"></script>
   <script src="js/engine.js"></script>
+
+  <!-- Winning Content Modal -->
+
   <div class="container">
     <!-- Button trigger modal -->
-    <button id="modalTriggerWin" type="button" class="btn btn-primary" data-toggle="modal" data-target="#winningModal"></button>
-    <!-- Modal -->
+    <button id="modalTriggerWin" type="button" class="btn btn-primary" data-toggle="modal" data-target="#winningModal" data-backdrop="static"></button>
+    <!-- Winning Content Modal -->
     <div class="modal fade" id="winningModal" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -76,10 +92,13 @@
       </div>
     </div>
   </div>
+
+  <!-- Losing Content Modal -->
+
   <div class="container">
     <!-- Button trigger modal -->
-    <button id="modalTriggerLose" type="button" class="btn btn-primary" data-toggle="modal" data-target="#losingModal"></button>
-    <!-- Modal -->
+    <button id="modalTriggerLose" type="button" class="btn btn-primary" data-toggle="modal" data-target="#losingModal" data-backdrop="static"></button>
+    <!-- Losing Content Modal -->
     <div class="modal fade" id="losingModal" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -99,10 +118,13 @@
       </div>
     </div>
   </div>
+
+  <!-- Intro modal  -->
+
   <div class="container">
     <!-- Button trigger modal -->
-    <button id="modalTriggerStart" type="button" class="btn btn-primary" data-toggle="modal" data-target="#StartModal"></button>
-    <!-- Modal -->
+    <button id="modalTriggerStart" type="button" class="btn btn-primary" data-toggle="modal" data-target="#StartModal" data-backdrop="static" ></button>
+    <!-- Starting Content Modal -->
     <div class="modal fade" id="StartModal" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -137,6 +159,9 @@
       </div>
     </div>
   </div>
+
+  <!-- Section for Mobile Support  -->
+
   <div id="mobileSupportButtons">
     <table>
       <tr>

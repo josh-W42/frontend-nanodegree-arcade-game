@@ -1,6 +1,24 @@
-frontend-nanodegree-arcade-game
-===============================
+# Udacity FrontEnd Nanodegree Project: Classic Arcade Game Clone
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
+## Description.
+	This a clone of the classic game 'froger'. This goal of this game is to cross an enemy filled street to reach the water. However, players can lose lives if they come in contact with a bug.
+* If a player loses all 4 lives then they lose.
+* if a player reaches a score of 5000 (and reaches water!) then they will win.
+* Gems will randomly appear at the start of the game to boost a player's score.
+* Only an Easy difficulty is accessible the first time a user plays.
+* Use Arrow keys on a keyboard to move or, if on mobile or tablet, use the touch buttons that will appear.
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+### Built With:
+* <a href="https://getbootstrap.com/">BootStrap</a>
+* <a href="https://fontawesome.com/">Font Awesome</a>
+* <a href="https://jquery.com/">jquery</a>
+
+## Getting started:
+	Head over to the <a href="https://josh-w42.github.io/frontend-nanodegree-arcade-game/" />Github Pages site</a> to try it out. Then clone or fork this repository.
+
+### Authors
+  Josh Wilson (-> Forked repository from ->) Udacity.
+
+### Acknowledgments:
+* Excited to work on this one, will put in additional levels at some point.
+* Big thank you Udacity.

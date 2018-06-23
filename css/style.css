@@ -1,3 +1,4 @@
+/* Globals */
 img {
   height: 150px;
 }
@@ -19,11 +20,7 @@ canvas {
   margin-left: 5px;
   margin-right: auto;
 }
-
-#mobileSupportButtons {
-  display: none;
-}
-
+/* Game Box */
 #gameSideBox {
   height: 540px;
   width: 500px;
@@ -52,6 +49,17 @@ canvas {
   color: black;
 }
 
+.lostLife {
+  -webkit-animation: loselife .5s infinite linear; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: loselife .5s infinite linear; /* Firefox < 16 */
+}
+
+@keyframes loselife {
+  0% {text-shadow: 0px 0px 1px black;}
+  50% {text-shadow: 0px 0px 5px white;}
+  100% {text-shadow: 0px 0px 0px black;}
+}
+
 .playerTitle {
   float: none;
   margin-left: auto;
@@ -74,6 +82,21 @@ canvas {
   display: flex;
 }
 
+.playerRow {
+  width: 450px;
+  height: 300px;
+  flex-direction: row;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.playerIcon {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+}
+/* Modal Content */
 #modalTriggerLose,
 #modalTriggerWin,
 #modalTriggerStart {
@@ -90,21 +113,6 @@ canvas {
 #medium {
   margin-left: 100px;
   margin-right: 100px;
-}
-
-.playerRow {
-  width: 450px;
-  height: 300px;
-  flex-direction: row;
-  display: flex;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.playerIcon {
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
 }
 
 .modal-content {
@@ -136,17 +144,6 @@ canvas {
   display: inline;
 }
 
-.lostLife {
-  -webkit-animation: loselife .5s infinite linear; /* Safari, Chrome and Opera > 12.1 */
-  -moz-animation: loselife .5s infinite linear; /* Firefox < 16 */
-}
-
-@keyframes loselife {
-   0% {text-shadow: 0px 0px 1px black;}
-   50% {text-shadow: 0px 0px 5px white;}
-   100% {text-shadow: 0px 0px 0px black;}
-}
-
 #time {
   font-weight: normal;
 }
@@ -157,6 +154,10 @@ canvas {
 
 #lives {
   font-weight: normal;
+}
+/* Mobile support section */
+#mobileSupportButtons {
+  display: none;
 }
 
 @media screen and (max-width: 1025px) {

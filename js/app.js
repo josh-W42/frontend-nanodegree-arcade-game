@@ -33,7 +33,9 @@ let Enemy = function() {
     }
   }
   this.speedFactor = this.setSpeed();
-
+  // This class function will reset the bug position giving an illusion of a
+  // creating a new one. Works with the setSpeed function in the update prototype
+  // prototype function.
   this.reposition = function () {
     this.y = ((Math.floor(Math.random() * 3) + 1) * 100) - 60;
     if(this.goingRight) {
@@ -48,7 +50,8 @@ let Enemy = function() {
 };
 
 // Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
+// Parameter: dt, a time delta between ticks.
+// All objects in the game have an update and render prototype function.
 Enemy.prototype.update = function(dt) {
   // You should multiply any movement by the dt parameter
   // which will ensure the game runs at the same speed for
@@ -117,7 +120,8 @@ Player.prototype.handleInput = function (input) {
     }
     break;
   }
-  // This condition checks if the player has reached the water.
+  // This condition checks if the player has reached the water and will also
+  // check if the player has won the game.
   if(player.y <= 0) {
     score = score + 500;
     document.querySelector('#score').innerHTML = `${score}`;
@@ -127,7 +131,7 @@ Player.prototype.handleInput = function (input) {
   }
 };
 
-// The gem class, that sets the type of gem.
+// The gem class, that sets the type and value of a gem.
 let Gem = function() {
   function generateGemType() {
     const value = Math.floor((Math.random() * 3) + 1);
@@ -175,8 +179,6 @@ function LevelOne() {
       }
     }
     this.goingRight = this.setDirection();
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
     if (this.goingRight) {
       // The image/sprite for our enemies, this uses
       // a helper we've provided to easily load images
@@ -203,6 +205,7 @@ function LevelOne() {
 
   LevelOnePlayer.prototype = Player;
 
+  // Level one Gem locations are randomized and only appear on the stone tiles.
   function LevelOneGem() {
     Gem.call(this);
     this.x = ((Math.floor(Math.random() * 5) + 1) * 100);
@@ -212,7 +215,7 @@ function LevelOne() {
   LevelOneGem.prototype = Gem;
 
   function generateGemArray(difficulty) {
-    // I'll allow a possible max of 5 gems and a minimum of 1 per level one;
+    // This will generate the amount of gems made avalible to the player.
     let generateNum;
     switch (difficulty) {
       case 'easy':
@@ -254,12 +257,15 @@ function LevelOne() {
     }
     return enemyArray;
   }
-  // All levels have a player, enemy/gem array as properties.
+  // All levels should have a player, enemy/gem array as properties in order for
+  // the setlevel function to work properly.
   this.enemies = generateEnemyArray(difficulty);
   this.player = new LevelOnePlayer;
   this.gems = generateGemArray(difficulty);
 }
 
+// Both checkcollisions and checkNearbyGems are used to find out if the player
+// has reached them.
 
 function checkCollisions() {
   allEnemies.forEach(function(enemy){
@@ -277,10 +283,6 @@ function checkCollisions() {
       else {
         heartsLeft[0].className = 'fa fa-heart-o';
         heartsLeft[0].classList.toggle('lostLife');
-        checkPlayerWin();
-        if (gameRunning) {
-          endGame();
-        }
       }
       player.x = 200;
       player.y = 375;
@@ -288,6 +290,7 @@ function checkCollisions() {
   });
 }
 
+//Once a player has reached a gem they must be removed from the global gem Array.
 function checkNearbyGems() {
   allGems.forEach(function(gem, index, array){
     // These variables should make this easier to read but basically if a bug
@@ -315,39 +318,6 @@ document.addEventListener('keyup', function(e) {
     player.prototype.handleInput.call(player, allowedKeys[e.keyCode]);
 });
 
-//This is for everything that may occur after this js file.
-window.addEventListener('load', function(){
-  document.querySelector('#mobileSupportButtons').addEventListener('click', function(e){
-    window.addEventListener('dblclick', function(e){
-      // e.preventDefault();
-    });
-    if (e.target.classList[0] === 'touchButtons') {
-      let allowedButtonId = {
-        arrowUpKey: 'up',
-        arrowDownKey: 'down',
-        arrowRightKey: 'right',
-        arrowLeftKey: 'left'
-      };
-      e.target.classList.toggle('buttonPress');
-      setTimeout(function () {
-        e.target.classList.toggle('buttonPress');
-        player.prototype.handleInput.call(player, allowedButtonId[e.target.id]);
-      });
-    }
-  });
-  document.querySelectorAll('.startButton').forEach(function(button) {
-    button.addEventListener('click', function(e) {
-      difficulty = e.target.id;
-      level = new LevelOne;
-      gameData = setLevel(allEnemies, player, allGems, level);
-      allEnemies = gameData[0];
-      player = gameData[1];
-      allGems = gameData[2];
-      gameRunning = true;
-      timerInterval = setInterval(startTimer, 10);
-    });
-  });
-});
 
 //This function allows users to change their character.
 function iconSelect(e) {
@@ -356,11 +326,12 @@ function iconSelect(e) {
   e.target.classList.toggle('playerSelected');
   player.sprite = e.target.src.split('game/')[1];
 }
-
+// This sets all icons to triger the above function.
 document.querySelectorAll('.player').forEach(function(icon){
     icon.addEventListener('click', iconSelect);
 });
 
+// Small helper function that helps with displaying the time.
 function fillZero(num) {
   //This function should
   if (num < 10) {
@@ -369,9 +340,9 @@ function fillZero(num) {
   return num;
 }
 
+// This function will run in the background, constantly updating the timer.
 function startTimer() {
   if(gameRunning) {
-    // This function will run in the background, constantly updating the timer.
     tens++;
     if (tens > 99) {
       seconds++;
@@ -394,6 +365,8 @@ function resetTimer() {
   minutes = 0;
 }
 
+// this function is only called in the handleInput player prototype function.
+// It will triger the end of the game.
 function checkPlayerWin() {
   if (score >= 5000) {
     gameRunning = false;
@@ -406,6 +379,8 @@ function checkPlayerWin() {
   }
 }
 
+// This function is called in the checkCollisions function when the player has
+// lost all their lives.
 function endGame() {
   gameRunning = false;
   document.querySelector('#modalTriggerLose').click();
@@ -415,6 +390,8 @@ function endGame() {
 
 }
 
+// The next functions restrict the difficulty options for users if it is their
+// first time playing.
 function firstGameSet() {
   document.querySelector('#medium').disabled = true;
   document.querySelector('#crazy').disabled = true;
@@ -427,9 +404,45 @@ function unlockDifficulty() {
 
 let level = new LevelOne;
 
+// This function is called in the engine.js file, and is used to set global variables
+// in the event of a level change.
 function setLevel(allEnemies, player, anyGems, level) {
   allEnemies = level.enemies;
   player = level.player;
   anyGems = level.gems;
   return [allEnemies, player, anyGems];
 }
+
+//This is for everything that may occur after this js file.
+window.addEventListener('load', function() {
+  // This will map the mobile buttons to player handleInput prototype function.
+  document.querySelector('#mobileSupportButtons').addEventListener('click', function(e){
+    if (e.target.classList[0] === 'touchButtons') {
+      let allowedButtonId = {
+        arrowUpKey: 'up',
+        arrowDownKey: 'down',
+        arrowRightKey: 'right',
+        arrowLeftKey: 'left'
+      };
+      e.target.classList.toggle('buttonPress');
+      setTimeout(function () {
+        e.target.classList.toggle('buttonPress');
+        player.prototype.handleInput.call(player, allowedButtonId[e.target.id]);
+      });
+    }
+  });
+  // When a player clicks on play button, global variables are initialized,
+  // the timer starts, and the canvas begins updating.
+  document.querySelectorAll('.startButton').forEach(function(button) {
+    button.addEventListener('click', function(e) {
+      difficulty = e.target.id;
+      level = new LevelOne;
+      gameData = setLevel(allEnemies, player, allGems, level);
+      allEnemies = gameData[0];
+      player = gameData[1];
+      allGems = gameData[2];
+      gameRunning = true;
+      timerInterval = setInterval(startTimer, 10);
+    });
+  });
+});
