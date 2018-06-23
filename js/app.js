@@ -31,7 +31,7 @@ let Enemy = function() {
         return Math.floor(Math.random() * 7) + 1;
         break;
     }
-  }
+  };
   this.speedFactor = this.setSpeed();
   // This class function will reset the bug position giving an illusion of a
   // creating a new one. Works with the setSpeed function in the update prototype
@@ -46,7 +46,7 @@ let Enemy = function() {
       this.x = 450;
       this.sprite = 'images/enemy-bug-left.png';
     }
-  }
+  };
 };
 
 // Update the enemy's position, required method for game
@@ -191,7 +191,7 @@ function LevelOne() {
     }
     // This random y value should be within the three street tiles.
     this.y = ((Math.floor(Math.random() * 3) + 1) * 50);
-  };
+  }
 
   LevelOneEnemy.prototype = Enemy;
 
@@ -376,7 +376,6 @@ function checkPlayerWin() {
     document.querySelectorAll('.scoreResult')[0].innerHTML = `${score} Points`;
     document.querySelector('.livesResult').innerHTML = `${player.lives}`;
     document.querySelectorAll('.difficulty')[0].innerHTML = `${difficulty.toUpperCase()}`;
-
   }
 }
 
