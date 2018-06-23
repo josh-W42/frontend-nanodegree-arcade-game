@@ -7,7 +7,7 @@ let Enemy = function() {
   // I wanted bugs to be unpredictable so I radomized their speed.
   this.setSpeed = function () {
     return Math.floor(Math.random() * 5) + 1;
-  };
+  }
 
   this.speedFactor = this.setSpeed();
   this.reposition = function () {
@@ -20,8 +20,8 @@ let Enemy = function() {
       this.x = 450;
       this.sprite = 'images/enemy-bug-left.png';
     }
-  };
-}
+  }
+};
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -105,8 +105,39 @@ Player.prototype.handleInput = function (input) {
   }
 };
 
-let Level = function () {
-}
+let Gem = function() {
+  function generateGemType() {
+    const value = Math.floor((Math.random() * 3) + 1);
+    switch (value) {
+      case 1:
+        return {sprite: 'images/Gem Blue.png', value: 250};
+        break;
+      case 2:
+        return {sprite: 'images/Gem Green.png', value: 500};
+        break;
+      case 3:
+        return {sprite: 'images/Gem Orange.png', value: 1000};
+        break;
+    }
+  }
+  let gemAndValue = generateGemType()
+  this.sprite = gemAndValue['sprite'];
+  this.x;
+  this.y;
+  this.value = gemAndValue['value'];
+};
+
+Gem.prototype.render = function () {
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+Gem.prototype.update = function (dt) {
+  this.x = this.x;
+  this.y = this.y;
+};
+
+// Was going to make levels later.
+let Level = function () {};
 
 Level.prototype.makeEnemy = function () {
   return this.makeEnemy();
@@ -116,8 +147,8 @@ Level.prototype.makePlayer = function () {
   return this.makePlayer();
 };
 
-// Since I'm making multiple levels, I want the behaviors of my Enemies and
-// Player to be different for each level.
+// Since I'll make multiple levels later, I want the behaviors of my Enemies and
+// Player to be different and similar in some ways for each level.
 function LevelOne() {
   Level.call(this);
   function LevelOneEnemy() {
@@ -131,7 +162,7 @@ function LevelOne() {
       else {
         return false;
       }
-    };
+    }
     this.goingRight = this.setDirection();
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
@@ -147,7 +178,7 @@ function LevelOne() {
     }
     // This random y value should be within the three street tiles.
     this.y = ((Math.floor(Math.random() * 3) + 1) * 50);
-  }
+  };
 
   LevelOneEnemy.prototype = Enemy;
 
@@ -167,7 +198,24 @@ function LevelOne() {
     return new LevelOnePlayer;
   }
 
+  function LevelOneGem() {
+    Gem.call(this);
+    this.x = ((Math.floor(Math.random() * 5) + 1) * 100);
+    this.y = ((Math.floor(Math.random() * 3) + 1) * 75);
+  }
 
+  LevelOneGem.prototype = Gem;
+
+  function generateGemArray() {
+    // I'll allow a possible max of 4 gems and a minimum of 1;
+    const generateNum = Math.floor((Math.random() * 4) + 1);
+    let gemArray = [];
+    for (let i = 0; i < generateNum; i++){
+      const gem = new LevelOneGem;
+      gemArray.push(gem);
+    }
+    return gemArray;
+  }
 
   // All levels should have an enemies property.
   let bug1 = this.makeEnemy();
@@ -178,6 +226,7 @@ function LevelOne() {
   let bug6 = this.makeEnemy();
   this.enemies = [bug1, bug2, bug3, bug4, bug5, bug6];
   this.player = this.makePlayer();
+  this.gems = generateGemArray();
 }
 
 LevelOne.prototype = Level;
@@ -202,6 +251,20 @@ function checkCollisions() {
       }
       player.x = 200;
       player.y = 375;
+    }
+  });
+}
+
+function checkNearbyGems() {
+  allGems.forEach(function(gem, index, array){
+    // These variables should make this easier to read but basically if a bug
+    // comes within a 100 x 50 (x, y) area of the player, the player is reset.
+    const closeOnX = (gem.x >= (player.x - 50) && gem.x <= (player.x + 50));
+    const closeOnY = (gem.y >= (player.y - 25) && gem.y <= (player.y + 25));
+    if((closeOnX) && (closeOnY)) {
+      score = score + gem.value;
+      document.querySelector('#score').innerHTML = `${score}`;
+      array.splice(index, 1);
     }
   });
 }
@@ -316,14 +379,17 @@ let minutes = 0;
 let score = 0;
 let gameRunning = false;
 let timerInterval;
+let allGems;
 
-function setLevel(allEnemies, player, level) {
+function setLevel(allEnemies, player, anyGems, level) {
   allEnemies = level.enemies;
   player = level.player;
-  return [allEnemies, player];
+  anyGems = level.gems;
+  return [allEnemies, player, anyGems];
 }
 
-let gameData = setLevel(allEnemies, player, level_one);
+let gameData = setLevel(allEnemies, player, allGems, level_one);
 
 allEnemies = gameData[0];
 player = gameData[1];
+allGems = gameData[2];

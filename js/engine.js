@@ -88,6 +88,7 @@ var Engine = (function(global) {
     function update(dt) {
         updateEntities(dt);
         checkCollisions();
+        checkNearbyGems();
     }
 
     /* This is called by the update function and loops through all of the
@@ -157,10 +158,12 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
+         allGems.forEach(function(gem) {
+           gem.prototype.render.call(gem);
+         });
         allEnemies.forEach(function(enemy) {
             enemy.prototype.render.call(enemy);
         });
-
         player.prototype.render.call(player);
     }
 
@@ -174,11 +177,15 @@ var Engine = (function(global) {
           emptyHeart.className = 'fa fa-heart';
         });
       }
-      player.lives = 4;
       score = 0;
       resetTimer();
       gameRunning = false;
       document.querySelector('#score').innerHTML = 0;
+      level_one = new LevelOne;
+      gameData = setLevel(allEnemies, player, allGems, level_one);
+      allEnemies = gameData[0];
+      player = gameData[1];
+      allGems = gameData[2];
       document.querySelector('#modalTriggerStart').click();
     }
 
@@ -197,7 +204,11 @@ var Engine = (function(global) {
         'images/char-horn-girl.png',
         'images/char-pink-girl.png',
         'images/char-princess-girl.png',
-        'images/char-boy-negative.png'
+        'images/char-boy-negative.png',
+        'images/Heart.png',
+        'images/Gem Blue.png',
+        'images/Gem Green.png',
+        'images/Gem Orange.png'
     ]);
     Resources.onReady(init);
 
