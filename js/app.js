@@ -283,6 +283,7 @@ function checkCollisions() {
       else {
         heartsLeft[0].className = 'fa fa-heart-o';
         heartsLeft[0].classList.toggle('lostLife');
+        endGame();
       }
       player.x = 200;
       player.y = 375;
