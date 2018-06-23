@@ -44,8 +44,10 @@ var Engine = (function(global) {
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
-        update(dt);
-        render();
+         if (gameRunning) {
+           update(dt);
+           render();
+         }
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
@@ -63,9 +65,15 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-        reset();
-        lastTime = Date.now();
-        main();
+      // Had to add in this so the game could reset.
+      document.querySelectorAll('.resetGameButton').forEach(function(button) {
+        button.addEventListener('click', function (){
+            reset();
+        });
+      });
+      reset();
+      lastTime = Date.now();
+      main();
     }
 
     /* This function is called by main (our game loop) and itself calls all
@@ -161,7 +169,17 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-      
+      if(document.querySelectorAll('.fa-heart-o') != null) {
+        document.querySelectorAll('.fa-heart-o').forEach(function(emptyHeart){
+          emptyHeart.className = 'fa fa-heart';
+        });
+      }
+      player.lives = 4;
+      score = 0;
+      resetTimer();
+      gameRunning = false;
+      document.querySelector('#score').innerHTML = 0;
+      document.querySelector('#modalTriggerStart').click();
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -174,7 +192,12 @@ var Engine = (function(global) {
         'images/grass-block.png',
         'images/enemy-bug-right.png',
         'images/enemy-bug-left.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png',
+        'images/char-boy-negative.png'
     ]);
     Resources.onReady(init);
 

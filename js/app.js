@@ -59,6 +59,7 @@ let Player = function() {
   this.x;
   this.y;
   this.sprite;
+  this.lives = 4;
 };
 
 Player.prototype.render = function () {
@@ -96,6 +97,9 @@ Player.prototype.handleInput = function (input) {
   }
   // This condition checks if the player has reached the water.
   if(player.y <= 0) {
+    score = score + 500;
+    document.querySelector('#score').innerHTML = `${score}`;
+    checkPlayerWin();
     player.x = 200;
     player.y = 375;
   }
@@ -163,6 +167,8 @@ function LevelOne() {
     return new LevelOnePlayer;
   }
 
+
+
   // All levels should have an enemies property.
   let bug1 = this.makeEnemy();
   let bug2 = this.makeEnemy();
@@ -183,6 +189,17 @@ function checkCollisions() {
     const closeOnX = (enemy.x >= (player.x - 50) && enemy.x <= (player.x + 50));
     const closeOnY = (enemy.y >= (player.y - 25) && enemy.y <= (player.y + 25));
     if((closeOnX) && (closeOnY)) {
+      player.lives = player.lives - 1;
+      const heartsLeft = document.querySelectorAll('.fa-heart');
+      if(heartsLeft.length != 1) {
+        heartsLeft[0].className = 'fa fa-heart-o';
+        heartsLeft[0].classList.toggle('lostLife');
+      }
+      else {
+        heartsLeft[0].className = 'fa fa-heart-o';
+        heartsLeft[0].classList.toggle('lostLife');
+        endGame();
+      }
       player.x = 200;
       player.y = 375;
     }
@@ -202,6 +219,41 @@ document.addEventListener('keyup', function(e) {
     player.prototype.handleInput.call(player, allowedKeys[e.keyCode]);
 });
 
+//This is for everything that may occur after this js file.
+window.addEventListener('load', function(){
+  document.querySelector('#mobileSupportButtons').addEventListener('click', function(e){
+    if (e.target.classList[0] === 'touchButtons') {
+      let allowedButtonId = {
+        arrowUpKey: 'up',
+        arrowDownKey: 'down',
+        arrowRightKey: 'right',
+        arrowLeftKey: 'left'
+      };
+      e.target.classList.toggle('buttonPress');
+      setTimeout(function () {
+        e.target.classList.toggle('buttonPress');
+        player.prototype.handleInput.call(player, allowedButtonId[e.target.id]);
+      }, 50);
+    }
+  });
+  document.querySelector('#startGameButton').addEventListener('click', function() {
+    gameRunning = true;
+    timerInterval = setInterval(startTimer, 10);
+  });
+});
+
+//This function allows users to change their character.
+function iconSelect(e) {
+  const testVariable = document.querySelector('.playerSelected');
+  document.querySelector('.playerSelected').classList.toggle('playerSelected');
+  e.target.classList.toggle('playerSelected');
+  player.sprite = e.target.src.split('game/')[1];
+}
+
+document.querySelectorAll('.player').forEach(function(icon){
+    icon.addEventListener('click', iconSelect);
+});
+
 function fillZero(num) {
   //This function should
   if (num < 10) {
@@ -211,6 +263,7 @@ function fillZero(num) {
 }
 
 function startTimer() {
+  if(gameRunning) {
     // This function will run in the background, constantly updating the timer.
     tens++;
     if (tens > 99) {
@@ -221,7 +274,8 @@ function startTimer() {
       minutes++;
       seconds = 0;
     }
-  document.querySelector('#time').innerHTML = `${fillZero(minutes)}:${fillZero(seconds)}:${fillZero(tens)}`;
+    document.querySelector('#time').innerHTML = `${fillZero(minutes)}:${fillZero(seconds)}:${fillZero(tens)}`;
+  }
 }
 
 function resetTimer() {
@@ -231,17 +285,34 @@ function resetTimer() {
   seconds = 0;
   tens = 0;
   minutes = 0;
+}
+
+function checkPlayerWin() {
+  if (score >= 5000) {
+    gameRunning = false;
+    document.querySelector('#modalTriggerWin').click();
+    document.querySelectorAll('.timeResult')[0].innerHTML = `${minutes} minutes, ${seconds} seconds.`;
+    document.querySelectorAll('.scoreResult')[0].innerHTML = `${score}`;
+    document.querySelector('.livesResult').innerHTML = `${player.lives}`;
+  }
+}
+
+function endGame() {
   gameRunning = false;
+  document.querySelector('#modalTriggerLose').click();
+  document.querySelectorAll('.timeResult')[1].innerHTML = `${minutes} minutes, ${seconds} seconds.`;
+  document.querySelectorAll('.scoreResult')[1].innerHTML = `${score}`;
 }
 
 let level_one = new LevelOne;
 let allEnemies;
 let player;
-let gameRunning;
 let seconds = 0;
 let tens = 0;
 let minutes = 0;
-let timerInterval = setInterval(startTimer, 10);
+let score = 0;
+let gameRunning = false;
+let timerInterval;
 
 function setLevel(allEnemies, player, level) {
   allEnemies = level.enemies;
