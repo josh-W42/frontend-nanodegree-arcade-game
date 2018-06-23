@@ -64,10 +64,10 @@
             <h4 class="modal-title">Congratulations! You Won!</h4>
           </div>
           <div class="modal-body">
-            <h1>Completed in: <span class="timeResult"></span></h1>
-            <h1>Lives Left: <span class="livesResult"></span></h1>
-            <h1>Score: <span class="scoreResult"></span></h1>
-            <p>You won the game in a time of <span id="timeResult"></span> and with <span id="livesResult"></span> live(s) left, WOW</p>
+            <h1 class="difficulty" ></h1>
+            <h2>Completed in: <span class="timeResult"></span></h1>
+            <h2>Lives Left: <span class="livesResult"></span></h1>
+            <h2>Score: <span class="scoreResult"></span></h1>
           </div>
           <div class="modal-footer">
             <button class="resetGameButton" type="button" class="btn btn-default" data-dismiss="modal">Play Again</button>
@@ -87,9 +87,10 @@
             <h4 class="modal-title">Oh No! You lost all your lives!</h4>
           </div>
           <div class="modal-body">
-            <h1>Time: <span class="timeResult"></span></h1>
-            <h1>Score: <span class="scoreResult"></span></h1>
-            <p>BETTER LUCK NEXT TIME</p>
+            <h1 class="difficulty"></h1>
+            <h2>Time: <span class="timeResult"></span></h1>
+            <h2>Score: <span class="scoreResult"></span></h1>
+            <p>Better Luck Next Time</p>
           </div>
           <div class="modal-footer">
             <button class="resetGameButton" type="button" class="btn btn-default" data-dismiss="modal">Play Again</button>
@@ -116,10 +117,21 @@
               If you happen to lose all of your lives, you will LOSE.
               But, if you reach a score of 5000, you will WIN.
             </p>
-            <h1>Have Fun!</h1>
+            <p>
+              If you're lucky, you could find valuable gems that increase your score.
+              But Beware! they can be risky to capture, and your goal is still
+              to reach the water.
+            </p>
+            <p>
+              Play once on easy mode to get a hang of the game, then choose your
+              own difficulty.
+            </p>
+            <h1>Have Fun!</h2>
           </div>
           <div class="modal-footer">
-            <button id="startGameButton" type="button" class="btn btn-default" data-dismiss="modal">Play</button>
+            <button id="easy" type="button" class="btn btn-default startButton" data-dismiss="modal">Easy</button>
+            <button id="medium" type="button" class="btn btn-default startButton" data-dismiss="modal">Medium</button>
+            <button id="crazy" type="button" class="btn btn-default startButton" data-dismiss="modal">Crazy</button>
           </div>
         </div>
       </div>

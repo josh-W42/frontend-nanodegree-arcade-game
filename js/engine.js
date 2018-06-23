@@ -72,6 +72,7 @@ var Engine = (function(global) {
         });
       });
       reset();
+      firstGameSet();
       lastTime = Date.now();
       main();
     }
@@ -181,11 +182,7 @@ var Engine = (function(global) {
       resetTimer();
       gameRunning = false;
       document.querySelector('#score').innerHTML = 0;
-      level_one = new LevelOne;
-      gameData = setLevel(allEnemies, player, allGems, level_one);
-      allEnemies = gameData[0];
-      player = gameData[1];
-      allGems = gameData[2];
+      unlockDifficulty();
       document.querySelector('#modalTriggerStart').click();
     }
 

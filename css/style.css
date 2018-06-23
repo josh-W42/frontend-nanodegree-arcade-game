@@ -80,6 +80,18 @@ canvas {
   display: none;
 }
 
+#easy,
+#hard {
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 0px;
+}
+
+#medium {
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
 .playerRow {
   width: 450px;
   height: 300px;
@@ -104,16 +116,24 @@ canvas {
   font-weight: bolder;
 }
 
-.modal-body h1 {
+.modal-body h2 {
   text-align: left;
+}
+
+.modal-body h1,
+.modal-footer h1 {
+  text-align: center;
 }
 
 .modal-body span {
   text-align: right;
+  font-weight: normal;
+  font-size: 16pt;
 }
 
 .modal-footer {
   border-top: 0px;
+  display: inline;
 }
 
 .lostLife {
@@ -212,6 +232,11 @@ canvas {
     height: 75px;
   }
 
+  #medium {
+    margin-left: 25px;
+    margin-right: 25px;
+  }
+
   #gameSideBox {
     display: flex;
     order: 2;
@@ -261,6 +286,11 @@ canvas {
 
   .infoValue {
     box-shadow: 0px 0px 0px black;
+  }
+
+  #startGameButton,
+  .resetGameButton {
+    padding: 25px;
   }
 
   .touchButtons {

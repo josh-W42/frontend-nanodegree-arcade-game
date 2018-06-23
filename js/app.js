@@ -1,3 +1,17 @@
+let allEnemies;
+let allGems;
+let player;
+// The three variables above must be set for engine.js to function.
+let seconds = 0;
+let tens = 0;
+let minutes = 0;
+let score = 0;
+// gameRunning controls if the timer and cavans will up date in the background.
+let gameRunning = false;
+let timerInterval;
+//Games start on an easy difficulty, so players can get used to the game.
+let difficulty = 'easy';
+
 // Enemies our player must avoid
 let Enemy = function() {
   this.x;
@@ -6,10 +20,20 @@ let Enemy = function() {
   this.goingRight;
   // I wanted bugs to be unpredictable so I radomized their speed.
   this.setSpeed = function () {
-    return Math.floor(Math.random() * 5) + 1;
+    switch (difficulty) {
+      case 'easy':
+        return Math.floor(Math.random() * 3) + 1;
+        break;
+      case 'medium':
+        return Math.floor(Math.random() * 5) + 1;
+        break;
+      case 'crazy':
+        return Math.floor(Math.random() * 7) + 1;
+        break;
+    }
   }
-
   this.speedFactor = this.setSpeed();
+
   this.reposition = function () {
     this.y = ((Math.floor(Math.random() * 3) + 1) * 100) - 60;
     if(this.goingRight) {
@@ -52,9 +76,7 @@ Enemy.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+// player class, sets only the lives, a level class will set the other properties.
 let Player = function() {
   this.x;
   this.y;
@@ -105,18 +127,19 @@ Player.prototype.handleInput = function (input) {
   }
 };
 
+// The gem class, that sets the type of gem.
 let Gem = function() {
   function generateGemType() {
     const value = Math.floor((Math.random() * 3) + 1);
     switch (value) {
       case 1:
-        return {sprite: 'images/Gem Blue.png', value: 250};
+        return {sprite: 'images/Gem Blue.png', value: 500};
         break;
       case 2:
-        return {sprite: 'images/Gem Green.png', value: 500};
+        return {sprite: 'images/Gem Green.png', value: 1000};
         break;
       case 3:
-        return {sprite: 'images/Gem Orange.png', value: 1000};
+        return {sprite: 'images/Gem Orange.png', value: 2000};
         break;
     }
   }
@@ -136,24 +159,12 @@ Gem.prototype.update = function (dt) {
   this.y = this.y;
 };
 
-// Was going to make levels later.
-let Level = function () {};
-
-Level.prototype.makeEnemy = function () {
-  return this.makeEnemy();
-};
-
-Level.prototype.makePlayer = function () {
-  return this.makePlayer();
-};
-
 // Since I'll make multiple levels later, I want the behaviors of my Enemies and
 // Player to be different and similar in some ways for each level.
 function LevelOne() {
-  Level.call(this);
   function LevelOneEnemy() {
     Enemy.call(this);
-    // Bugs go in oppossing directions to increase dificulty.
+    // Bugs go in oppossing directions to increase difficulty.
     this.setDirection = function () {
       const direction = Math.floor((Math.random() * 2) + 1);
       if (direction === 1) {
@@ -184,19 +195,13 @@ function LevelOne() {
 
   function LevelOnePlayer() {
     Player.call(this);
+    // (x,y) bottom row, center.
     this.x = 200;
     this.y = 375;
     this.sprite = 'images/char-boy.png';
   }
 
   LevelOnePlayer.prototype = Player;
-
-  this.makeEnemy = function () {
-    return new LevelOneEnemy;
-  }
-  this.makePlayer = function () {
-    return new LevelOnePlayer;
-  }
 
   function LevelOneGem() {
     Gem.call(this);
@@ -206,9 +211,20 @@ function LevelOne() {
 
   LevelOneGem.prototype = Gem;
 
-  function generateGemArray() {
-    // I'll allow a possible max of 4 gems and a minimum of 1;
-    const generateNum = Math.floor((Math.random() * 4) + 1);
+  function generateGemArray(difficulty) {
+    // I'll allow a possible max of 5 gems and a minimum of 1 per level one;
+    let generateNum;
+    switch (difficulty) {
+      case 'easy':
+        generateNum = 1;
+        break;
+      case 'medium':
+        generateNum = Math.floor((Math.random() * 3) + 1);
+        break;
+      case 'crazy':
+        generateNum = Math.floor((Math.random() * 5) + 1);
+        break;
+    }
     let gemArray = [];
     for (let i = 0; i < generateNum; i++){
       const gem = new LevelOneGem;
@@ -217,19 +233,33 @@ function LevelOne() {
     return gemArray;
   }
 
-  // All levels should have an enemies property.
-  let bug1 = this.makeEnemy();
-  let bug2 = this.makeEnemy();
-  let bug3 = this.makeEnemy();
-  let bug4 = this.makeEnemy();
-  let bug5 = this.makeEnemy();
-  let bug6 = this.makeEnemy();
-  this.enemies = [bug1, bug2, bug3, bug4, bug5, bug6];
-  this.player = this.makePlayer();
-  this.gems = generateGemArray();
+  function generateEnemyArray(difficulty) {
+    // Will create enemies depending on difficulty.
+    let generateNum;
+    switch (difficulty) {
+      case 'easy':
+        generateNum = 4;
+        break;
+      case 'medium':
+        generateNum = 5;
+        break;
+      case 'crazy':
+        generateNum = 6;
+        break;
+    }
+    let enemyArray = [];
+    for (let i = 0; i < generateNum; i++){
+      const enemy = new LevelOneEnemy;
+      enemyArray.push(enemy);
+    }
+    return enemyArray;
+  }
+  // All levels have a player, enemy/gem array as properties.
+  this.enemies = generateEnemyArray(difficulty);
+  this.player = new LevelOnePlayer;
+  this.gems = generateGemArray(difficulty);
 }
 
-LevelOne.prototype = Level;
 
 function checkCollisions() {
   allEnemies.forEach(function(enemy){
@@ -247,7 +277,10 @@ function checkCollisions() {
       else {
         heartsLeft[0].className = 'fa fa-heart-o';
         heartsLeft[0].classList.toggle('lostLife');
-        endGame();
+        checkPlayerWin();
+        if (gameRunning) {
+          endGame();
+        }
       }
       player.x = 200;
       player.y = 375;
@@ -286,7 +319,7 @@ document.addEventListener('keyup', function(e) {
 window.addEventListener('load', function(){
   document.querySelector('#mobileSupportButtons').addEventListener('click', function(e){
     window.addEventListener('dblclick', function(e){
-      e.preventDefault();
+      // e.preventDefault();
     });
     if (e.target.classList[0] === 'touchButtons') {
       let allowedButtonId = {
@@ -302,9 +335,17 @@ window.addEventListener('load', function(){
       });
     }
   });
-  document.querySelector('#startGameButton').addEventListener('click', function() {
-    gameRunning = true;
-    timerInterval = setInterval(startTimer, 10);
+  document.querySelectorAll('.startButton').forEach(function(button) {
+    button.addEventListener('click', function(e) {
+      difficulty = e.target.id;
+      level = new LevelOne;
+      gameData = setLevel(allEnemies, player, allGems, level);
+      allEnemies = gameData[0];
+      player = gameData[1];
+      allGems = gameData[2];
+      gameRunning = true;
+      timerInterval = setInterval(startTimer, 10);
+    });
   });
 });
 
@@ -357,29 +398,34 @@ function checkPlayerWin() {
   if (score >= 5000) {
     gameRunning = false;
     document.querySelector('#modalTriggerWin').click();
-    document.querySelectorAll('.timeResult')[0].innerHTML = `${minutes} minutes, ${seconds} seconds.`;
-    document.querySelectorAll('.scoreResult')[0].innerHTML = `${score}`;
+    document.querySelectorAll('.timeResult')[0].innerHTML = `${fillZero(minutes)}:${fillZero(seconds)}:${fillZero(tens)}`;
+    document.querySelectorAll('.scoreResult')[0].innerHTML = `${score} Points`;
     document.querySelector('.livesResult').innerHTML = `${player.lives}`;
+    document.querySelectorAll('.difficulty')[0].innerHTML = `${difficulty.toUpperCase()}`;
+
   }
 }
 
 function endGame() {
   gameRunning = false;
   document.querySelector('#modalTriggerLose').click();
-  document.querySelectorAll('.timeResult')[1].innerHTML = `${minutes} minutes, ${seconds} seconds.`;
-  document.querySelectorAll('.scoreResult')[1].innerHTML = `${score}`;
+  document.querySelectorAll('.difficulty')[1].innerHTML = `${difficulty.toUpperCase()}`;
+  document.querySelectorAll('.timeResult')[1].innerHTML = `${fillZero(minutes)}:${fillZero(seconds)}:${fillZero(tens)}`;
+  document.querySelectorAll('.scoreResult')[1].innerHTML = `${score} Points`;
+
 }
 
-let level_one = new LevelOne;
-let allEnemies;
-let player;
-let seconds = 0;
-let tens = 0;
-let minutes = 0;
-let score = 0;
-let gameRunning = false;
-let timerInterval;
-let allGems;
+function firstGameSet() {
+  document.querySelector('#medium').disabled = true;
+  document.querySelector('#crazy').disabled = true;
+}
+
+function unlockDifficulty() {
+  document.querySelector('#medium').disabled = false;
+  document.querySelector('#crazy').disabled = false;
+}
+
+let level = new LevelOne;
 
 function setLevel(allEnemies, player, anyGems, level) {
   allEnemies = level.enemies;
@@ -387,9 +433,3 @@ function setLevel(allEnemies, player, anyGems, level) {
   anyGems = level.gems;
   return [allEnemies, player, anyGems];
 }
-
-let gameData = setLevel(allEnemies, player, allGems, level_one);
-
-allEnemies = gameData[0];
-player = gameData[1];
-allGems = gameData[2];
