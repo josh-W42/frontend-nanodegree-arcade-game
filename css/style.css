@@ -1,3 +1,11 @@
+img {
+  height: 150px;
+}
+
+img:hover {
+  cursor: pointer;
+}
+
 body {
     text-align: center;
     background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 255, 255, 0.9));
@@ -6,33 +14,26 @@ body {
     background-size: cover;
 }
 
+canvas {
+  position: relative;
+  margin-left: 5px;
+  margin-right: auto;
+}
+
+#mobileSupportButtons {
+  display: none;
+}
+
 #gameSideBox {
-  height: 530px;
+  height: 540px;
   width: 500px;
   float: left;
-  border: 2px solid black;
   margin-left: 150px;
   margin-top: 50px;
   text-align: center;
   display: block;
   position: relative;
-}
-
-@media screen and (max-width: 1025px) {
-  #gameSideBox {
-    width: 400px;
-    margin-left: 25px;
-  }
-  body {
-    background-size: auto;
-    background-repeat: repeat-y;
-  }
-}
-
-canvas {
-  position: relative;
-  margin-left: 5;
-  float: left;
+  box-shadow: 0px 0px 50px black;
 }
 
 #gameInfoContainer {
@@ -42,7 +43,6 @@ canvas {
 
 .infoValue {
   font-weight: bold;
-  /* border: 1px solid black; */
   height: 100px;
   width: 150px;
   margin-right: auto;
@@ -50,6 +50,81 @@ canvas {
   background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4));
   box-shadow: 5px 5px 10px black;
   color: black;
+}
+
+.playerTitle {
+  float: none;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.playerSelected {
+  -webkit-animation: select 4s infinite linear; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: select 4s infinite linear; /* Firefox < 16 */
+}
+
+@keyframes select {
+  50% {-webkit-transform: rotateY(180deg);}
+}
+
+#playerIconChooser {
+  width: 530px;
+  height: 300px;
+  margin-top: 10px;
+  display: flex;
+}
+
+#modalTriggerLose,
+#modalTriggerWin,
+#modalTriggerStart {
+  display: none;
+}
+
+.playerRow {
+  width: 450px;
+  height: 300px;
+  flex-direction: row;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.playerIcon {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.modal-content {
+  margin-right: 0px;
+}
+
+.modal-title {
+  border-bottom: 0px solid white;
+  font-weight: bolder;
+}
+
+.modal-body h1 {
+  text-align: left;
+}
+
+.modal-body span {
+  text-align: right;
+}
+
+.modal-footer {
+  border-top: 0px;
+}
+
+.lostLife {
+  -webkit-animation: loselife .5s infinite linear; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: loselife .5s infinite linear; /* Firefox < 16 */
+}
+
+@keyframes loselife {
+   0% {text-shadow: 0px 0px 1px black;}
+   50% {text-shadow: 0px 0px 5px white;}
+   100% {text-shadow: 0px 0px 0px black;}
 }
 
 #time {
@@ -62,4 +137,45 @@ canvas {
 
 #lives {
   font-weight: normal;
+}
+
+@media screen and (max-width: 1025px) {
+  body {
+    background-size: auto;
+    background-repeat: repeat-y;
+  }
+
+  #gameSideBox {
+    width: 425px;
+    margin-left: 25px;
+  }
+
+  #playerIconChooser {
+    margin-top: 20px;
+  }
+
+  #mobileSupportButtons {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    text-align: center;
+    width: auto;
+    font-size: 35pt;
+  }
+  #mobileSupportButtons table {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .touchButtons {
+    background: lightgrey;
+    padding: 45px;
+    box-shadow: 2px 2px 10px black;
+  }
+
+  .buttonPress {
+    color: white;
+    border: 5px inset lightgrey;
+  }
 }
